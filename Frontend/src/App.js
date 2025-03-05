@@ -1,20 +1,25 @@
 import './App.css';
 
-import {useState} from "react";
-import {useDropzone} from "react-dropzone";
+import { useState } from "react";
+import { useDropzone } from "react-dropzone";
 
 function App() {
     const [image, setImage] = useState(null);
     const [processedImage, setProcessedImage] = useState(null);
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    const [loading, setLoading] = useState(false);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: "image/*",
         onDrop: (acceptedFiles) => {
             const file = acceptedFiles[0];
             setImage(file);
+            setLoading(true);
             handleUpload(file)
-                .then((response) => console.log("Upload response:", response))
-                .catch((error) => console.error("Upload failed", error));
-
+                .then(() => setLoading(false))
+                .catch((error) => {
+                    console.error("Upload failed", error);
+                    setLoading(false);
+                });
         },
     });
 
@@ -55,7 +60,9 @@ function App() {
 
             {image && <p className="mt-4">Uploaded: {image.name}</p>}
 
-            {processedImage && (
+            {loading && <p className="mt-4 text-blue-500">Processing image...</p>}
+
+            {processedImage && !loading && (
                 <div className="mt-6">
                     <img src={processedImage} alt="Processed"
                          className="max-w-full h-auto border rounded-lg shadow-md"/>
