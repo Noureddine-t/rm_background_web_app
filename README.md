@@ -22,6 +22,16 @@
 
 ## Running the App
 
+### A. With Docker and Docker Compose
+
+1. Build the Docker images:
+
+    ```bash
+    docker-compose up
+    ```
+2. The app will be available at `http://localhost:3000` in your browser.
+
+### B. Locally 
 1. Navigate to the `frontend` folder and install dependencies:
 
     ```bash
@@ -50,4 +60,3 @@
     ```bash
     python app.py
     ```
-
