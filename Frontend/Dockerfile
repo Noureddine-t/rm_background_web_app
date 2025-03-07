@@ -1,8 +1,8 @@
-FROM node:21 AS build
+FROM node:21-alpine AS build
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 RUN npm install
 
@@ -13,6 +13,8 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
+
+LABEL app="frontend"
 
 EXPOSE 80
 
